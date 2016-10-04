@@ -15,8 +15,13 @@ import java.util.List;
  */
 public class SimpleOrderService implements OrderService {
 
-    private final OrderRepository orderRepository = new InMemoryOrderRepository();
-    private final PizzaService pizzaService = new SimplePizzaService();
+    private final OrderRepository orderRepository; // = new InMemoryOrderRepository();
+    private final PizzaService pizzaService; //new SimplePizzaService();
+
+    public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService) {
+        this.orderRepository = orderRepository;
+        this.pizzaService = pizzaService;
+    }
 
     public Order placeNewOrder(Customer customer, Integer... pizzasID) {
         List<Pizza> pizzas = new ArrayList<>();
