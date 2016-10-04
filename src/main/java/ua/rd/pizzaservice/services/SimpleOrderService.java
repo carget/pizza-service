@@ -3,6 +3,7 @@ package ua.rd.pizzaservice.services;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.Pizza;
+import ua.rd.pizzaservice.repository.InMemoryOrderRepository;
 import ua.rd.pizzaservice.repository.OrderRepository;
 
 import java.math.BigDecimal;
@@ -14,19 +15,14 @@ import java.util.List;
  */
 public class SimpleOrderService implements OrderService {
 
-    private List<Order> orderList;
-    private PizzaService pizzaService;
-
-    public SimpleOrderService() {
-        this.orderList = new ArrayList<>();
-        this.pizzaService = new SimplePizzaService();
-    }
+    private final OrderRepository orderRepository = new InMemoryOrderRepository();
+    private final PizzaService pizzaService = new SimplePizzaService();
 
     public Order placeNewOrder(Customer customer, Integer... pizzasID) {
         List<Pizza> pizzas = new ArrayList<>();
 
         for (Integer id : pizzasID) {
-            pizzas.add(pizzaService.getPizzaByID(id));  // get Pizza from predefined in-memory list
+            pizzas.add(findPizzaById(id));  // get Pizza from predefined in-memory list
         }
         Order newOrder = new Order(customer, pizzas);
 
@@ -34,10 +30,14 @@ public class SimpleOrderService implements OrderService {
         return newOrder;
     }
 
+    public Pizza findPizzaById(Integer id){
+        return pizzaService.getPizzaByID(id);
+    }
+
     @Override
     public void saveOrder(Order newOrder) {
         newOrder.setNextId();
-        orderList.add(newOrder);
+        orderRepository.saveOrder(newOrder);
     }
 
 

@@ -12,7 +12,7 @@ public class InMemoryOrderRepository implements OrderRepository {
 
     private List<Order> orderList;
 
-    public InMemoryOrderRepository(List<Order> orderList) {
+    public InMemoryOrderRepository() {
         this.orderList = new ArrayList<>();
     }
 
