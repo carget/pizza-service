@@ -1,4 +1,4 @@
-package ua.rd.pizzaservice;
+package ua.rd.pizzaservice.domain;
 
 import java.math.BigDecimal;
 
@@ -9,20 +9,20 @@ public class Pizza {
     private Integer id;
     private BigDecimal price;
     private String name;
-    private PizzaType type;
+    private Type type;
 
-    public Pizza(Integer id, BigDecimal price, String name, PizzaType type) {
+    public Pizza(Integer id, BigDecimal price, String name, Type type) {
         this.id = id;
         this.price = price;
         this.name = name;
         this.type = type;
     }
 
-    public PizzaType getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(PizzaType type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
@@ -58,5 +58,9 @@ public class Pizza {
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 '}';
+    }
+
+    public enum Type {
+        VEGETARIAN, SEA, MEAT;
     }
 }

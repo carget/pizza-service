@@ -1,4 +1,4 @@
-package ua.rd.pizzaservice;
+package ua.rd.pizzaservice.domain;
 
 import java.time.LocalDate;
 
