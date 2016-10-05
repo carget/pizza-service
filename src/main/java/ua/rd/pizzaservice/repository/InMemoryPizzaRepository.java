@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.repository;
 
 import ua.rd.pizzaservice.domain.Pizza;
+import ua.rd.pizzaservice.infrastructure.Benchmark;
 import ua.rd.pizzaservice.infrastructure.PostCreate;
 
 import java.math.BigDecimal;
@@ -25,6 +26,7 @@ public class InMemoryPizzaRepository implements PizzaRepository {
         pizzaList.add(new Pizza(4, new BigDecimal(50), "Pizza 5", Pizza.Type.MEAT));
     }
 
+    @Benchmark
     @Override
     public Pizza getPizzaByID(Integer id) {
         return pizzaList.get(id);

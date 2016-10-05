@@ -1,9 +1,13 @@
 package ua.rd.pizzaservice.infrastructure;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Anton_Mishkurov
@@ -28,10 +32,9 @@ public class ApplicationContext implements Context {
 
         BeanBuilder builder = new BeanBuilder(type);
         builder.createBean();
-        //configuration
-//      builder.createBeanProxy();
         builder.callPostCreateMethod();
         builder.callInitMethod();
+        builder.createBeanProxy();
         bean = builder.build();
 
         beans.put(name, bean);
@@ -99,6 +102,45 @@ public class ApplicationContext implements Context {
                     }
                 }
             }
+        }
+
+        public void createBeanProxy() {
+
+            if (!isAnnotatedByBenchmark()) return;
+
+            final Object original = bean;
+            bean = Proxy.newProxyInstance(bean.getClass().getClassLoader(), bean.getClass().getInterfaces(),
+                    new InvocationHandler() {
+
+                        @Override
+                        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                            Class<?>[] types = new Class<?>[args.length];
+                            Arrays.stream(args).map(Object::getClass).collect(Collectors.toList()).toArray(types);
+                            Method originalMethod = original.getClass().getMethod(method.getName(), types);
+                            Benchmark benchmark = originalMethod.getAnnotation(Benchmark.class);
+                            if (benchmark != null && benchmark.value()) {
+                                long start = System.nanoTime();
+                                Object result = method.invoke(original, args);
+                                System.out.println("Method (" + method.getName() + ") nanoseconds: " +
+                                        Math.abs(System.nanoTime() - start));
+                                return result;
+                            } else {
+                                return method.invoke(original, args);
+                            }
+                        }
+                    }
+            );
+        }
+
+        private boolean isAnnotatedByBenchmark() {
+            Method[] methods = bean.getClass().getMethods();
+            for (Method method : methods) {
+                Benchmark benchmark = method.getAnnotation(Benchmark.class);
+                if (benchmark != null && benchmark.value()) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
