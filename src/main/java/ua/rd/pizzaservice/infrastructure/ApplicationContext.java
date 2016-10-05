@@ -23,21 +23,21 @@ public class ApplicationContext implements Context {
         }
         Class<?> type = config.getImpl(name);
         Constructor<?> constructor = type.getConstructors()[0];
+        T bean = getBeanFromConstructor(constructor);
+        beans.put(name, bean);
+        return bean;
+    }
+
+    private <T> T getBeanFromConstructor(Constructor<?> constructor) {
         try {
             int parameterCount = constructor.getParameterCount();
-            if (parameterCount > 0) {
-                Class<?>[] parameterTypes = constructor.getParameterTypes();
-                Object[] params = new Object[parameterCount];
-                for (int i = 0; i < parameterCount; i++) {
-                    String beanName = covertTypeToBeanName(parameterTypes[i].getSimpleName());
-                    params[i] = getBean(beanName);
-                }
-                return (T) constructor.newInstance(params);
-            } else {
-                T bean = (T) type.newInstance();
-                beans.put(name, bean);
-                return bean;
+            Object[] params = new Object[parameterCount];
+            Class<?>[] parameterTypes = constructor.getParameterTypes();
+            for (int i = 0; i < parameterCount; i++) {
+                String beanName = covertTypeToBeanName(parameterTypes[i].getSimpleName());
+                params[i] = getBean(beanName);
             }
+            return (T) constructor.newInstance(params);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
