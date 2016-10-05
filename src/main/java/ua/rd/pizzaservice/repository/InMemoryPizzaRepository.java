@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.repository;
 
 import ua.rd.pizzaservice.domain.Pizza;
+import ua.rd.pizzaservice.infrastructure.PostCreate;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -11,12 +12,11 @@ import java.util.List;
  */
 public class InMemoryPizzaRepository implements PizzaRepository {
 
-    private static List<Pizza> pizzaList;
+    private List<Pizza> pizzaList;
 
     public InMemoryPizzaRepository(){}
 
-    static
-    {
+    public void init(){
         pizzaList = new ArrayList<>();
         pizzaList.add(new Pizza(0, new BigDecimal(10), "Pizza 1", Pizza.Type.MEAT));
         pizzaList.add(new Pizza(1, new BigDecimal(20), "Pizza 2", Pizza.Type.SEA));
@@ -28,5 +28,10 @@ public class InMemoryPizzaRepository implements PizzaRepository {
     @Override
     public Pizza getPizzaByID(Integer id) {
         return pizzaList.get(id);
+    }
+
+    @PostCreate
+    public void testAnntotation(){
+        System.out.println("Annotation rules!");
     }
 }

@@ -1,6 +1,7 @@
 package ua.rd.pizzaservice.infrastructure;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,8 +30,8 @@ public class ApplicationContext implements Context {
         builder.createBean();
         //configuration
 //      builder.createBeanProxy();
-//      builder.callPostCreateMethod();
-//      builder.callInitMethod();
+        builder.callPostCreateMethod();
+        builder.callInitMethod();
         bean = builder.build();
 
         beans.put(name, bean);
@@ -70,15 +71,35 @@ public class ApplicationContext implements Context {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-
         }
 
+        //todo change signature to (Class<?> paramtype)
         private String covertTypeToBeanName(String name) {
             char[] chars = name.toCharArray();
             chars[0] = Character.toLowerCase(chars[0]);
             return new String(chars);
         }
 
+        private void callInitMethod() {
+            try {
+                type.getMethod("init").invoke(bean);
+            } catch (NoSuchMethodException ignored) {
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        private void callPostCreateMethod() {
+            for (Method method : type.getMethods()) {
+                if (method.isAnnotationPresent(PostCreate.class)) {
+                    try {
+                        method.invoke(bean);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
     }
 
 
