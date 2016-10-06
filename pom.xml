@@ -9,6 +9,11 @@
     <version>1.0</version>
     <packaging>jar</packaging>
 
+    <properties>
+        <spring-version>4.3.3.RELEASE</spring-version>
+
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -24,6 +29,16 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
