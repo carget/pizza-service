@@ -1,9 +1,11 @@
 package ua.rd.pizzaservice.repository;
 
+import org.springframework.stereotype.Repository;
 import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.infrastructure.Benchmark;
 import ua.rd.pizzaservice.infrastructure.PostCreate;
 
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +13,14 @@ import java.util.List;
 /**
  * @author Anton_Mishkurov
  */
+@Repository("pizzaRepository")
 public class InMemoryPizzaRepository implements PizzaRepository {
 
     private List<Pizza> pizzaList;
 
     public InMemoryPizzaRepository(){}
 
+    @PostConstruct
     public void init(){
         pizzaList = new ArrayList<>();
         pizzaList.add(new Pizza(0, new BigDecimal(10), "Pizza 1", Pizza.Type.MEAT));
