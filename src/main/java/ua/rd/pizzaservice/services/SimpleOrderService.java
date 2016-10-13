@@ -37,7 +37,7 @@ public class SimpleOrderService implements OrderService {
         }
 
 //        Order newOrder = new Order(customer, pizzas);
-        Order newOrder = createNewOrder();
+        Order newOrder = instantiateNewOrder();
         newOrder.setCustomer(customer);
         newOrder.setPizzas(pizzas);
 
@@ -45,14 +45,14 @@ public class SimpleOrderService implements OrderService {
         return newOrder;
     }
 
-    protected Order createNewOrder() {
+    protected Order instantiateNewOrder() {
         throw new IllegalStateException("Container cannot create order!");
     }
 
     private void verifyPizzaCount(Integer[] pizzasID) {
         int pizzaCount = pizzasID.length;
         if (pizzaCount > MAX_PIZZA_COUNT) {
-            throw new IllegalArgumentException("Max pizza count is " + MAX_PIZZA_COUNT +
+            throw new IllegalStateException("Max pizza count is " + MAX_PIZZA_COUNT +
                     "\nYou want add " + pizzaCount + " pizzas");
         }
     }

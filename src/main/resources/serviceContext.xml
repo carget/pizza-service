@@ -14,7 +14,7 @@
     <bean class="ua.rd.pizzaservice.infrastructure.BenchmarkBeanPostProcessor"/>
 
     <bean name="orderService" class="ua.rd.pizzaservice.services.SimpleOrderService">
-        <lookup-method name="createNewOrder" bean="order"/>
+        <lookup-method name="instantiateNewOrder" bean="order"/>
         <!--<constructor-arg ref="pizzaService"/>-->
         <!--<constructor-arg ref="orderRepository"/>-->
     </bean>

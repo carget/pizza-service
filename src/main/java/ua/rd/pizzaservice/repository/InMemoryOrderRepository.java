@@ -20,8 +20,9 @@ public class InMemoryOrderRepository implements OrderRepository {
         this.orderList = new ArrayList<>();
     }
 
-    @Benchmark(value = false)
+
     @Override
+    @Benchmark
     public void saveOrder(Order newOrder) {
         newOrder.setNextId();
         orderList.add(newOrder);

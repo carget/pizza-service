@@ -8,13 +8,14 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import ua.rd.pizzaservice.repository.OrderRepository;
 
+import static ua.rd.pizzaservice.services.SimpleOrderService.MAX_PIZZA_COUNT;
+
 /**
  * @author Anton_Mishkurov
  */
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleOrderServiceTest {
 
-    private static final int MAX_PIZZA_COUNT = 10;
 
     private OrderService orderService;
 

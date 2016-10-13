@@ -32,7 +32,7 @@ public class BenchmarkBeanPostProcessor implements BeanPostProcessor {
 
         System.out.println("Created proxy " + bean);
         final Object original = bean;
-        Class<?>[] declaredInterfaces = getAllDeclaredInterfaces(bean);
+        Class<?>[] declaredInterfaces = getDeclaredInterfaces(bean);
         bean = Proxy.newProxyInstance(bean.getClass().getClassLoader(), declaredInterfaces,
                 new InvocationHandler() {
 
@@ -45,7 +45,8 @@ public class BenchmarkBeanPostProcessor implements BeanPostProcessor {
                         if (benchmark != null && benchmark.value()) {
                             long start = System.nanoTime();
                             Object result = method.invoke(original, args);
-                            System.out.println("Method (" + method.getName() + ") nanoseconds: " +
+                            System.out.println("Class:" + proxy.getClass()
+                                    + "Method (" + method.getName() + ") nanoseconds: " +
                                     Math.abs(System.nanoTime() - start));
                             return result;
                         } else {
@@ -57,7 +58,7 @@ public class BenchmarkBeanPostProcessor implements BeanPostProcessor {
         return bean;
     }
 
-    private Class<?>[] getAllDeclaredInterfaces(Object o) {
+    private Class<?>[] getDeclaredInterfaces(Object o) {
         List<Class<?>> interfaces = new ArrayList<>();
         Class<?> klazz = o.getClass();
         while (klazz != null) {

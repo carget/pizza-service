@@ -26,7 +26,7 @@ public class PizzaApp {
         System.out.println(order);
 
 //        PizzaRepository pizzaRepository = context.getBean("pizzaRepository");
-//        System.out.println(pizzaRepository.getPizzaByID(1));
+//        System.out.println(pizzaRepository.findPizzaByID(1));
 
     }
 

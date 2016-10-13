@@ -9,5 +9,5 @@ import ua.rd.pizzaservice.infrastructure.Benchmark;
 public interface PizzaRepository {
 
     @Benchmark
-    Pizza getPizzaByID(Integer id);
+    Pizza findPizzaByID(Integer id);
 }

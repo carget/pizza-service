@@ -20,7 +20,9 @@ public class InMemoryPizzaRepository implements PizzaRepository {
 
     public InMemoryPizzaRepository(){}
 
+
     @PostConstruct
+    @Benchmark
     public void init(){
         pizzaList = new ArrayList<>();
         pizzaList.add(new Pizza(0, new BigDecimal(10), "Pizza 1", Pizza.Type.MEAT));
@@ -30,9 +32,8 @@ public class InMemoryPizzaRepository implements PizzaRepository {
         pizzaList.add(new Pizza(4, new BigDecimal(50), "Pizza 5", Pizza.Type.MEAT));
     }
 
-    @Benchmark
     @Override
-    public Pizza getPizzaByID(Integer id) {
+    public Pizza findPizzaByID(Integer id) {
         return pizzaList.get(id);
     }
 
