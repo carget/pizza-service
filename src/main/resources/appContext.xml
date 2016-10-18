@@ -8,13 +8,18 @@
     <!--<bean name="order" class="ua.rd.pizzaservice.domain.Order" scope="prototype"/>-->
 
     <!--<bean name="pizzaService" class="ua.rd.pizzaservice.services.SimplePizzaService" autowire="constructor">-->
-        <!--&lt;!&ndash;<constructor-arg ref="pizzaRepository"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<constructor-arg ref="pizzaRepository"/>&ndash;&gt;-->
     <!--</bean>-->
 
     <bean class="ua.rd.pizzaservice.infrastructure.BenchmarkBeanPostProcessor"/>
 
     <bean name="orderService" class="ua.rd.pizzaservice.services.SimpleOrderService">
         <lookup-method name="instantiateNewOrder" bean="order"/>
+        <!--<property name="discountList">-->
+            <!--<list>-->
+                <!--<ref bean="ua.rd.pizzaservice.domain.discounts.DiscountByQty"/>-->
+            <!--</list>-->
+        <!--</property>-->
         <!--<constructor-arg ref="pizzaService"/>-->
         <!--<constructor-arg ref="orderRepository"/>-->
     </bean>

@@ -3,9 +3,6 @@ package ua.rd.pizzaservice.domain;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.runner.RunWith;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -14,6 +11,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Anton_Mishkurov
@@ -27,7 +25,7 @@ public class OrderTest {
 
     @Before
     public void setUp() throws Exception {
-        customer = null;
+        customer = new Customer("John", "Kudryashova str. 18");
         pizzaList = new ArrayList<>();
         pizzaList.add(new Pizza(0, new BigDecimal(10), "Pizza 1", Pizza.Type.MEAT));
         pizzaList.add(new Pizza(1, new BigDecimal(20), "Pizza 2", Pizza.Type.SEA));
@@ -53,6 +51,16 @@ public class OrderTest {
     public void getTotalWithDiscountByQty() {
         order = new Order(customer, pizzaList);
         assertThat(order.getTotal().compareTo(new BigDecimal(135)), equalTo(0));
+    }
+
+    @Test
+    public void testDiscountWithCard() {
+        DiscountCard discountCard = new DiscountCard();
+        discountCard.addAmount(new BigDecimal(100));
+        customer.setDiscountCard(discountCard);
+        order = new Order(customer, pizzaList);
+        assertEquals(new BigDecimal(125), order.getTotal());
+//        assertThat(order.getTotal().compareTo(new BigDecimal(125)), equalTo(0));
     }
 
     @Test

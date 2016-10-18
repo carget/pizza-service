@@ -11,4 +11,6 @@ public interface OrderService {
 
     void saveOrder(Order newOrder);
 
+    void cancelOrder(Long orderId);
+
 }

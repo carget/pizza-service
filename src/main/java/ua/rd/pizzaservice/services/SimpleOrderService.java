@@ -21,7 +21,7 @@ public class SimpleOrderService implements OrderService {
     private final PizzaService pizzaService; //new SimplePizzaService();
 
     @Autowired
-    public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService) {
+    public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService)  {
         this.orderRepository = orderRepository;
         this.pizzaService = pizzaService;
     }
@@ -65,6 +65,11 @@ public class SimpleOrderService implements OrderService {
     public void saveOrder(Order newOrder) {
         newOrder.setNextId();
         orderRepository.saveOrder(newOrder);
+    }
+
+    @Override
+    public void cancelOrder(Long orderId) {
+        orderRepository.getOrderById(orderId);
     }
 
 }

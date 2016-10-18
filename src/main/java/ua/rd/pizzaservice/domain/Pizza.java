@@ -1,15 +1,23 @@
 package ua.rd.pizzaservice.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * @author Anton_Mishkurov
  */
-public class Pizza {
+@Entity
+public class Pizza implements Serializable{
+    @Id
     private Integer id;
     private BigDecimal price;
     private String name;
     private Type type;
+
+    public Pizza() {
+    }
 
     public Pizza(Integer id, BigDecimal price, String name, Type type) {
         this.id = id;

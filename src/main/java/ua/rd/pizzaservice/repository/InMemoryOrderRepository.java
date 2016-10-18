@@ -1,12 +1,11 @@
 package ua.rd.pizzaservice.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.infrastructure.Benchmark;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Anton_Mishkurov
@@ -14,17 +13,24 @@ import java.util.List;
 @Repository
 public class InMemoryOrderRepository implements OrderRepository {
 
-    private List<Order> orderList;
+    private Map<Long, Order> orderList;
 
     public InMemoryOrderRepository() {
-        this.orderList = new ArrayList<>();
+        this.orderList = new HashMap<>();
     }
-
 
     @Override
     @Benchmark
     public void saveOrder(Order newOrder) {
         newOrder.setNextId();
-        orderList.add(newOrder);
+        orderList.put(newOrder.getId(), newOrder);
+    }
+
+    @Override
+    public Order getOrderById(Long orderId) {
+        if (orderId == null) {
+            throw new IllegalStateException("Order id cannot be null!");
+        }
+        return orderList.get(orderId);
     }
 }

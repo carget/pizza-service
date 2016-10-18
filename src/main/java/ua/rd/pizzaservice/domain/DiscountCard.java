@@ -17,6 +17,6 @@ public class DiscountCard {
     }
 
     public void addAmount(BigDecimal amount) {
-        this.amount.add(amount);
+        this.amount = this.amount.add(amount);
     }
 }

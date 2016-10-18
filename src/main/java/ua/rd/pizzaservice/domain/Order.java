@@ -14,15 +14,18 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROT
 @Component
 @Scope(SCOPE_PROTOTYPE)
 public class Order {
-    private Long id;
+
+    public static final int PIZZA_QTY_FOR_DISCOUNT = 4;
+    public static final double PIZZA_QTY_DISCOUNT_PERCENT = 0.3;
+
+    //TODO replace with map
     private List<Pizza> pizzaList;
+    private Long id;
     private Customer customer;
     private static Long nextId = 0L;
     private Status status;
 
-    public Order(Customer customer, List<Pizza> pizzaList) {
-        this.customer = customer;
-        this.pizzaList = pizzaList;
+    {
         this.status = Status.NEW;
     }
 
@@ -30,18 +33,15 @@ public class Order {
 
     }
 
+    public Order(Customer customer, List<Pizza> pizzaList) {
+        this.customer = customer;
+        this.pizzaList = pizzaList;
+    }
+
     public void setNextId() {
         id = nextId++;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", pizzaList=" + pizzaList +
-                ", customer=" + customer +
-                '}';
-    }
 
     public BigDecimal getTotal() {
         BigDecimal total = pizzaList.stream()
@@ -49,20 +49,7 @@ public class Order {
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, BigDecimal.ROUND_CEILING);
         total = total.subtract(getDiscountByQuantity());
-        return total;
-    }
-
-    public BigDecimal getDiscountByQuantity() {
-        if (pizzaList.size() < 4) {
-            return new BigDecimal(0);
-        }
-
-        BigDecimal discount = new BigDecimal("0.3").setScale(2, BigDecimal.ROUND_CEILING);
-
-        BigDecimal total = pizzaList.stream()
-                .map(Pizza::getPrice)
-                .max(BigDecimal::compareTo)
-                .get().multiply(discount);
+        total = total.subtract(getDiscountByCard(total));
         return total;
     }
 
@@ -83,6 +70,10 @@ public class Order {
 
     public void setPizzas(List<Pizza> pizzas) {
         this.pizzaList = pizzas;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public enum Status {
@@ -116,5 +107,37 @@ public class Order {
         public boolean canChangeTo(Status status) {
             return Transition.transitions.get(this).contains(status);
         }
+    }
+
+    public BigDecimal getDiscountByQuantity() {
+        if (pizzaList.size() < PIZZA_QTY_FOR_DISCOUNT) {
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal discount = new BigDecimal(PIZZA_QTY_DISCOUNT_PERCENT).setScale(2, BigDecimal.ROUND_CEILING);
+
+        BigDecimal total = pizzaList.stream()
+                .map(Pizza::getPrice)
+                .max(BigDecimal::compareTo)
+                .get().multiply(discount);
+        return total;
+    }
+
+    private BigDecimal getDiscountByCard(BigDecimal sumOrder) {
+        if (customer.getDiscountCard() == null) {
+            return BigDecimal.ZERO;
+        }
+        BigDecimal maxDiscount = sumOrder.multiply(new BigDecimal(0.3));
+        BigDecimal cardAmountDiscount = customer.getDiscountCard().getAmount().multiply(new BigDecimal(0.1));
+        return maxDiscount.min(cardAmountDiscount);
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", pizzaList=" + pizzaList +
+                ", customer=" + customer +
+                '}';
     }
 }

@@ -28,7 +28,6 @@ public class SimpleOrderServiceTest {
     @Before
     public void setUp() throws Exception {
         orderService = new SimpleOrderService(orderRepository, pizzaService);
-
     }
 
     @After

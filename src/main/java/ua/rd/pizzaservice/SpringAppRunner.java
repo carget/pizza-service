@@ -16,9 +16,9 @@ public class SpringAppRunner {
         ConfigurableApplicationContext repoContext =
                 new ClassPathXmlApplicationContext("repoContext.xml");
         ConfigurableApplicationContext serviceContext =
-                new ClassPathXmlApplicationContext(new String[]{"serviceContext.xml"}, repoContext);
+                new ClassPathXmlApplicationContext(new String[]{"appContext.xml"}, repoContext);
 
-        Customer customer = new Customer();
+        Customer customer = new Customer("John", "Kudryashova str. 18");
 
 //        Object objOrderService = serviceContext.getBean("orderService");
 

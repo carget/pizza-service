@@ -9,4 +9,6 @@ public interface OrderRepository {
 
     void saveOrder(Order newOrder) ;
 
+    Order getOrderById(Long orderId);
+
 }
