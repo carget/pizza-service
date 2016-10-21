@@ -1,16 +1,16 @@
 package ua.rd.pizzaservice.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * @author Anton_Mishkurov
  */
-@Entity
+@Entity @SequenceGenerator(allocationSize = 10, name = "PPP", initialValue = 15)
+
 public class Pizza implements Serializable{
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.TABLE, generator = "PPP")
     private Integer id;
     private BigDecimal price;
     private String name;
