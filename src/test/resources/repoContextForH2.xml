@@ -3,15 +3,16 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd">
-
-
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/jdbc
+        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
 <!-- bean definitions here -->
     <!--<bean name="pizzaRepository" class="ua.rd.pizzaservice.repository.InMemoryPizzaRepository"-->
@@ -20,20 +21,11 @@
     <bean class="ua.rd.pizzaservice.infrastructure.BenchmarkBeanPostProcessor"/>
 
     <context:annotation-config/>
-    <context:component-scan base-package="ua.rd.pizzaservice.repository"/>
+    <context:component-scan base-package="ua.rd.pizzaservice.repository">
 
-    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
-          destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/pizza"/>
-        <property name="username" value="root"/>
-        <property name="password" value="1111"/>
-        <property name="initialSize" value="5"/>
-    </bean>
+    </context:component-scan>
 
-    <context:property-placeholder
-            system-properties-mode="OVERRIDE"
-            location="classpath:jdbc.properties"/>
+    <jdbc:embedded-database id="dataSource" type="H2"/>
 
     <bean name="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -44,7 +36,7 @@
         <property name="packagesToScan" value="ua.rd.pizzaservice.domain"/>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>

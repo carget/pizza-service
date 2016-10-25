@@ -9,7 +9,7 @@ public class DiscountCard {
     private BigDecimal amount;
 
     public DiscountCard() {
-        this.amount = new BigDecimal(0);
+        this.amount = BigDecimal.ZERO;
     }
 
     public BigDecimal getAmount() {

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Anton_Mishkurov
  */
-@Repository("pizzaRepository")
+
 public class InMemoryPizzaRepository implements PizzaRepository {
 
     private List<Pizza> pizzaList;
@@ -35,6 +35,11 @@ public class InMemoryPizzaRepository implements PizzaRepository {
     @Override
     public Pizza findPizzaByID(Integer id) {
         return pizzaList.get(id);
+    }
+
+    @Override
+    public Pizza save(Pizza pizza) {
+        throw new UnsupportedOperationException("Not supported yet!");
     }
 
     @PostCreate

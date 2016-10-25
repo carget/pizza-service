@@ -8,9 +8,8 @@ import java.math.BigDecimal;
  * @author Anton_Mishkurov
  */
 @Entity @SequenceGenerator(allocationSize = 10, name = "PPP", initialValue = 15)
-
 public class Pizza implements Serializable{
-    @Id @GeneratedValue(strategy = GenerationType.TABLE, generator = "PPP")
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PPP")
     private Integer id;
     private BigDecimal price;
     private String name;
