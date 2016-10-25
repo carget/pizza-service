@@ -11,13 +11,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-
-
-<!-- bean definitions here -->
-    <!--<bean name="pizzaRepository" class="ua.rd.pizzaservice.repository.InMemoryPizzaRepository"-->
-    <!--init-method="init"/>-->
-    <!--<bean name="orderRepository" class="ua.rd.pizzaservice.repository.InMemoryOrderRepository"/>-->
-    <bean class="ua.rd.pizzaservice.infrastructure.BenchmarkBeanPostProcessor"/>
+    <!--<bean class="ua.rd.pizzaservice.infrastructure.BenchmarkBeanPostProcessor"/>-->
 
     <context:annotation-config/>
     <context:component-scan base-package="ua.rd.pizzaservice.repository"/>
@@ -57,19 +51,5 @@
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
-
-    <!--<bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">-->
-    <!--<property name="locations">-->
-    <!--<list>-->
-    <!--<value>classpath:jdbc.properties</value>-->
-    <!--</list>-->
-    <!--</property>-->
-    <!--<property name="ignoreResourceNotFound" value="true"/>-->
-    <!--&lt;!&ndash;<property name="simplePropertiesMode">&ndash;&gt;-->
-    <!--&lt;!&ndash;<util:constant&ndash;&gt;-->
-    <!--&lt;!&ndash;static-field="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE" />&ndash;&gt;-->
-    <!--&lt;!&ndash;</property>&ndash;&gt;-->
-    <!--</bean>-->
-
 
 </beans>

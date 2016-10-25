@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.pizzaservice.domain.Pizza;
+import ua.rd.pizzaservice.infrastructure.Benchmark;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,6 +25,7 @@ public class JpaPizzaRepository implements PizzaRepository {
 
     @Override
     @Transactional
+    @Benchmark
     public Pizza save(Pizza pizza) {
         return entityManager.merge(pizza);
     }

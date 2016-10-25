@@ -1,6 +1,8 @@
 package ua.rd.pizzaservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.domain.Pizza;
@@ -13,6 +15,7 @@ import java.util.List;
 /**
  * @author Anton_Mishkurov
  */
+@Service("orderService")
 public class SimpleOrderService implements OrderService {
 
     public static final int MAX_PIZZA_COUNT = 10;
@@ -36,18 +39,18 @@ public class SimpleOrderService implements OrderService {
             pizzas.add(findPizzaById(id));  // get Pizza from predefined in-memory list
         }
 
-//        Order newOrder = new Order(customer, pizzas);
-        Order newOrder = instantiateNewOrder();
-        newOrder.setCustomer(customer);
-        newOrder.setPizzas(pizzas);
+        Order newOrder = new Order(customer, pizzas);
+//        Order newOrder = instantiateNewOrder();
+//        newOrder.setCustomer(customer);
+//        newOrder.setPizzas(pizzas);
 
         saveOrder(newOrder);  // set Order Id and save Order to in-memory list
         return newOrder;
     }
 
-    protected Order instantiateNewOrder() {
-        throw new IllegalStateException("Container cannot create order!");
-    }
+//    protected Order instantiateNewOrder() {
+//        throw new IllegalStateException("Container cannot create order!");
+//    }
 
     private void verifyPizzaCount(Integer[] pizzasID) {
         int pizzaCount = pizzasID.length;

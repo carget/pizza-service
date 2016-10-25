@@ -9,15 +9,13 @@ import ua.rd.pizzaservice.repository.PizzaRepository;
 /**
  * @author Anton_Mishkurov
  */
-@Service
+@Service("pizzaService")
 public class SimplePizzaService implements PizzaService {
 
     private PizzaRepository pizzaRepository;
 
     @Autowired
     public SimplePizzaService(PizzaRepository pizzaRepository) {
-//        InitialContext context = new InitialContext();
-//        pizzaRepository = (PizzaRepository) context.getInstance("pizzaRepository");
         this.pizzaRepository = pizzaRepository;
     }
 

@@ -4,25 +4,18 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- bean definitions here -->
-    <!--<bean name="order" class="ua.rd.pizzaservice.domain.Order" scope="prototype"/>-->
+    <!--<bean class="ua.rd.pizzaservice.infrastructure.BenchmarkBeanPostProcessor"/>-->
 
-    <!--<bean name="pizzaService" class="ua.rd.pizzaservice.services.SimplePizzaService" autowire="constructor">-->
-    <!--&lt;!&ndash;<constructor-arg ref="pizzaRepository"/>&ndash;&gt;-->
+    <!--<bean name="orderService" class="ua.rd.pizzaservice.services.SimpleOrderService">-->
+        <!--&lt;!&ndash;<lookup-method name="instantiateNewOrder" bean="order"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<property name="discountList">&ndash;&gt;-->
+            <!--&lt;!&ndash;<list>&ndash;&gt;-->
+                <!--&lt;!&ndash;<ref bean="ua.rd.pizzaservice.domain.discounts.DiscountByQty"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;</list>&ndash;&gt;-->
+        <!--&lt;!&ndash;</property>&ndash;&gt;-->
+        <!--&lt;!&ndash;<constructor-arg ref="pizzaService"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<constructor-arg ref="orderRepository"/>&ndash;&gt;-->
     <!--</bean>-->
-
-    <bean class="ua.rd.pizzaservice.infrastructure.BenchmarkBeanPostProcessor"/>
-
-    <bean name="orderService" class="ua.rd.pizzaservice.services.SimpleOrderService">
-        <lookup-method name="instantiateNewOrder" bean="order"/>
-        <!--<property name="discountList">-->
-            <!--<list>-->
-                <!--<ref bean="ua.rd.pizzaservice.domain.discounts.DiscountByQty"/>-->
-            <!--</list>-->
-        <!--</property>-->
-        <!--<constructor-arg ref="pizzaService"/>-->
-        <!--<constructor-arg ref="orderRepository"/>-->
-    </bean>
 
     <context:annotation-config/>
     <context:component-scan base-package="ua.rd.pizzaservice.services"/>
