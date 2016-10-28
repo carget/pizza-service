@@ -11,12 +11,13 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Anton_Mishkurov
  */
 public class OrderTest {
+
+    private static final BigDecimal BIG_DECIMAL_EPSILON = BigDecimal.valueOf(0.00001d);
 
     private Customer customer;
     private List<Pizza> pizzaList;
@@ -59,8 +60,7 @@ public class OrderTest {
         discountCard.addAmount(new BigDecimal(100));
         customer.setDiscountCard(discountCard);
         order = new Order(customer, pizzaList);
-        assertEquals(new BigDecimal(125), order.getTotal());
-//        assertThat(order.getTotal().compareTo(new BigDecimal(125)), equalTo(0));
+        assertThat(order.getTotal().subtract(new BigDecimal(125)).abs().compareTo(BIG_DECIMAL_EPSILON) < 0, is(true));
     }
 
     @Test

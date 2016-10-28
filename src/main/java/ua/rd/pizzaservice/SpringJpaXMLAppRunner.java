@@ -14,7 +14,7 @@ import java.util.Arrays;
 /**
  * @author Anton_Mishkurov
  */
-public class SpringJpaAppRunner {
+public class SpringJpaXMLAppRunner {
     public static void main(String[] args) {
         ConfigurableApplicationContext repoContext =
                 new ClassPathXmlApplicationContext("repoContext.xml");

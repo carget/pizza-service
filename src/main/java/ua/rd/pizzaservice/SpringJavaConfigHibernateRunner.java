@@ -11,13 +11,15 @@ import java.math.BigDecimal;
 /**
  * @author Anton_Mishkurov
  */
-public class SpringJavaConfigRunner {
+public class SpringJavaConfigHibernateRunner {
     public static void main(String[] args) {
 
         ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
         PizzaRepository pizzaRepository = (PizzaRepository) context.getBean("pizzaRepository");
         Pizza pizza = new Pizza(null, BigDecimal.TEN, "Bavarian" , Pizza.Type.SEA);
+
+        pizzaRepository.save(pizza);
 
         System.out.println(pizzaRepository.save(pizza));
 

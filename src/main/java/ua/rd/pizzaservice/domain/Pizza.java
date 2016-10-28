@@ -7,12 +7,15 @@ import java.math.BigDecimal;
 /**
  * @author Anton_Mishkurov
  */
-@Entity @SequenceGenerator(allocationSize = 10, name = "PPP", initialValue = 15)
-public class Pizza implements Serializable{
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PPP")
+@Entity
+public class Pizza implements Serializable {
+    @TableGenerator(name = "pizzaGen", allocationSize = 10, initialValue = 1000,
+            pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_PIZZA_ID" ,valueColumnName = "NEXT_VAL")
+    @Id @GeneratedValue(strategy = GenerationType.TABLE, generator = "pizzaGen")
     private Integer id;
     private BigDecimal price;
     private String name;
+    @Enumerated(EnumType.STRING)
     private Type type;
 
     public Pizza() {
@@ -68,6 +71,6 @@ public class Pizza implements Serializable{
     }
 
     public enum Type {
-        VEGETARIAN, SEA, MEAT;
+        VEGETARIAN, SEA, MEAT
     }
 }

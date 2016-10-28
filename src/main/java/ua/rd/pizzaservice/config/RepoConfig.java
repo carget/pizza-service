@@ -60,19 +60,19 @@ public class RepoConfig {
 
     @Bean("transactionManager")
     public JpaTransactionManager jpaTransactionManager(
-            @Qualifier("entityManagerFactory") EntityManagerFactory localContainerEntityManagerFactoryBean) {
+            @Qualifier("entityManagerFactory") EntityManagerFactory factory) {
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(localContainerEntityManagerFactoryBean);
+        jpaTransactionManager.setEntityManagerFactory(factory);
         return jpaTransactionManager;
     }
 
     @Bean
     public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
-        PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
-        propertyPlaceholderConfigurer.setLocations(
+        PropertyPlaceholderConfigurer configurer = new PropertyPlaceholderConfigurer();
+        configurer.setLocations(
                 new ClassPathResource("jdbc.properties"));
-        propertyPlaceholderConfigurer.setIgnoreResourceNotFound(true);
-        propertyPlaceholderConfigurer.setSystemPropertiesMode(PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE);
-        return propertyPlaceholderConfigurer;
+        configurer.setIgnoreResourceNotFound(true);
+        configurer.setSystemPropertiesMode(PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE);
+        return configurer;
     }
 }

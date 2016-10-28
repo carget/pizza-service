@@ -1,28 +1,31 @@
 package ua.rd.pizzaservice.domain;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
+import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
-
-import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
 
 /**
  * @author Anton_Mishkurov
  */
-@Component
-@Scope(SCOPE_PROTOTYPE)
-public class Order {
+//@Component
+//@Scope(SCOPE_PROTOTYPE)
+@Entity
+public class Order implements Serializable{
 
     public static final int PIZZA_QTY_FOR_DISCOUNT = 4;
     public static final double PIZZA_QTY_DISCOUNT_PERCENT = 0.3;
 
     //TODO replace with map
     private List<Pizza> pizzaList;
+    @TableGenerator(name = "orderGen", allocationSize = 10, initialValue = 1000,
+            pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_ORDER_ID" ,valueColumnName = "NEXT_VAL")
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "orderGen")
     private Long id;
     private Customer customer;
     private static Long nextId = 0L;
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     {

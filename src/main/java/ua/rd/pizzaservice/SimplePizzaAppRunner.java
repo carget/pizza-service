@@ -10,7 +10,7 @@ import ua.rd.pizzaservice.services.SimpleOrderService;
 /**
  * @author Anton_Mishkurov
  */
-public class PizzaApp {
+public class SimplePizzaAppRunner {
 
     public static void main(String[] args) {
         Context context = new ApplicationContext(new JavaConfig());
