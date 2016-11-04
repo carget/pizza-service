@@ -2,6 +2,7 @@ package ua.rd.pizzaservice;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ua.rd.pizzaservice.domain.Address;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.services.OrderService;
@@ -18,7 +19,8 @@ public class SpringXMLAppRunner {
         ConfigurableApplicationContext serviceContext =
                 new ClassPathXmlApplicationContext(new String[]{"appContext.xml"}, repoContext);
 
-        Customer customer = new Customer("John", "Kudryashova str. 18");
+        Address address = new Address(null, "Kudryashova", 18, null);
+        Customer customer = new Customer("John Black", address);
 
 //        Object objOrderService = serviceContext.getBean("orderService");
 
@@ -26,7 +28,7 @@ public class SpringXMLAppRunner {
 
         OrderService orderService = (OrderService) serviceContext.getBean("orderService");
 
-        Order order = orderService.placeNewOrder(customer, 1, 2, 3);
+        Order order = orderService.placeNewOrder(customer, 1L, 2L, 3L);
         System.out.println(order);
 
         System.out.println("Service context: " + Arrays.toString(serviceContext.getBeanDefinitionNames()));

@@ -19,9 +19,14 @@ public class SimplePizzaService implements PizzaService {
         this.pizzaRepository = pizzaRepository;
     }
 
-    @Benchmark
+//    @Benchmark
     @Override
-    public Pizza getPizzaByID(Integer id) {
+    public Pizza getPizzaByID(Long id) {
         return pizzaRepository.findPizzaByID(id);
+    }
+
+    @Override
+    public Pizza save(Pizza pizza) {
+        return pizzaRepository.save(pizza);
     }
 }

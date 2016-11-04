@@ -31,12 +31,16 @@ public class SimpleOrderService implements OrderService {
 
     @Benchmark
     @Override
-    public Order placeNewOrder(Customer customer, Integer... pizzasID) {
+    public Order placeNewOrder(Customer customer, Long... pizzasID) {
         verifyPizzaCount(pizzasID);
         List<Pizza> pizzas = new ArrayList<>();
 
-        for (Integer id : pizzasID) {
-            pizzas.add(findPizzaById(id));  // get Pizza from predefined in-memory list
+        for (Long id : pizzasID) {
+            Pizza pizzaById = findPizzaById(id);
+            if (pizzaById == null) {
+                throw new IllegalArgumentException(String.format("Pizza with ID=%d does not exist", id));
+            }
+            pizzas.add(pizzaById);  // get Pizza from predefined in-memory list
         }
 
         Order newOrder = new Order(customer, pizzas);
@@ -44,7 +48,7 @@ public class SimpleOrderService implements OrderService {
 //        newOrder.setCustomer(customer);
 //        newOrder.setPizzas(pizzas);
 
-        saveOrder(newOrder);  // set Order Id and save Order to in-memory list
+//        saveOrder(newOrder);  // set Order Id and save Order to in-memory list
         return newOrder;
     }
 
@@ -52,7 +56,7 @@ public class SimpleOrderService implements OrderService {
 //        throw new IllegalStateException("Container cannot create order!");
 //    }
 
-    private void verifyPizzaCount(Integer[] pizzasID) {
+    private void verifyPizzaCount(Long[] pizzasID) {
         int pizzaCount = pizzasID.length;
         if (pizzaCount > MAX_PIZZA_COUNT) {
             throw new IllegalStateException("Max pizza count is " + MAX_PIZZA_COUNT +
@@ -60,13 +64,13 @@ public class SimpleOrderService implements OrderService {
         }
     }
 
-    public Pizza findPizzaById(Integer id) {
+    public Pizza findPizzaById(Long id) {
         return pizzaService.getPizzaByID(id);
     }
 
     @Override
     public void saveOrder(Order newOrder) {
-        newOrder.setNextId();
+//        newOrder.setNextId();
         orderRepository.saveOrder(newOrder);
     }
 

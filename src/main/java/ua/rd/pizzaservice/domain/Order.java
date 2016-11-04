@@ -8,21 +8,23 @@ import java.util.*;
 /**
  * @author Anton_Mishkurov
  */
-//@Component
-//@Scope(SCOPE_PROTOTYPE)
-@Entity
-public class Order implements Serializable{
+@Entity(name = "_Order")
+public class Order implements Serializable {
 
     public static final int PIZZA_QTY_FOR_DISCOUNT = 4;
     public static final double PIZZA_QTY_DISCOUNT_PERCENT = 0.3;
 
     //TODO replace with map
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Pizza> pizzaList;
+    private Map<Pizza, Integer> cart;
     @TableGenerator(name = "orderGen", allocationSize = 10, initialValue = 1000,
-            pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_ORDER_ID" ,valueColumnName = "NEXT_VAL")
+            pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_ORDER_ID", valueColumnName = "NEXT_VAL")
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "orderGen")
     private Long id;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "order_id")
     private Customer customer;
     private static Long nextId = 0L;
     @Enumerated(EnumType.STRING)
@@ -32,19 +34,12 @@ public class Order implements Serializable{
         this.status = Status.NEW;
     }
 
-    public Order() {
-
-    }
+    public Order() {}
 
     public Order(Customer customer, List<Pizza> pizzaList) {
         this.customer = customer;
         this.pizzaList = pizzaList;
     }
-
-    public void setNextId() {
-        id = nextId++;
-    }
-
 
     public BigDecimal getTotal() {
         BigDecimal total = pizzaList.stream()

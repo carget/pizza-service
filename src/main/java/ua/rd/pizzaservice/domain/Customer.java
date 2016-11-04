@@ -1,18 +1,31 @@
 package ua.rd.pizzaservice.domain;
 
+import javax.persistence.*;
+
 /**
  * @author Anton_Mishkurov
  */
+@Entity
 public class Customer {
+    @TableGenerator(name = "customerGen", allocationSize = 10, initialValue = 1000,
+            pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_CUSTOMER_ID", valueColumnName = "NEXT_VAL")
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "customerGen")
     private Long id;
     private String name;
-    private String address;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "address_id")
+    private Address address;
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "discount_id")
     private DiscountCard discountCard;
 
-    public Customer(String name, String address) {
+    public Customer(String name, Address address) {
         this.name = name;
         this.address = address;
-        this.discountCard= new DiscountCard();
+    }
+
+    public Customer() {
     }
 
     public Long getId() {
@@ -31,11 +44,11 @@ public class Customer {
         this.name = name;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
@@ -45,5 +58,6 @@ public class Customer {
 
     public void setDiscountCard(DiscountCard discountCard) {
         this.discountCard = discountCard;
+        discountCard.setCustomer(this);
     }
 }

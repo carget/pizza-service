@@ -6,5 +6,6 @@ import ua.rd.pizzaservice.domain.Pizza;
  * @author Anton_Mishkurov
  */
 public interface PizzaService {
-    Pizza getPizzaByID(Integer id);
+    Pizza getPizzaByID(Long id);
+    Pizza save(Pizza pizza);
 }

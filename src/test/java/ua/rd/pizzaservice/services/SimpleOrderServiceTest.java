@@ -37,7 +37,7 @@ public class SimpleOrderServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void placeNewBigOrder() throws Exception {
-        orderService.placeNewOrder(null, new Integer[MAX_PIZZA_COUNT + 1]);
+        orderService.placeNewOrder(null, new Long[MAX_PIZZA_COUNT + 1]);
     }
 
 }

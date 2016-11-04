@@ -10,9 +10,10 @@ import java.math.BigDecimal;
 @Entity
 public class Pizza implements Serializable {
     @TableGenerator(name = "pizzaGen", allocationSize = 10, initialValue = 1000,
-            pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_PIZZA_ID" ,valueColumnName = "NEXT_VAL")
-    @Id @GeneratedValue(strategy = GenerationType.TABLE, generator = "pizzaGen")
-    private Integer id;
+            pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_PIZZA_ID", valueColumnName = "NEXT_VAL")
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "pizzaGen")
+    private Long id;
     private BigDecimal price;
     private String name;
     @Enumerated(EnumType.STRING)
@@ -21,7 +22,7 @@ public class Pizza implements Serializable {
     public Pizza() {
     }
 
-    public Pizza(Integer id, BigDecimal price, String name, Type type) {
+    public Pizza(Long id, BigDecimal price, String name, Type type) {
         this.id = id;
         this.price = price;
         this.name = name;
@@ -36,11 +37,11 @@ public class Pizza implements Serializable {
         this.type = type;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

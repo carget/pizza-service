@@ -15,9 +15,9 @@
         http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
 <!-- bean definitions here -->
-    <!--<bean name="pizzaRepository" class="ua.rd.pizzaservice.repository.InMemoryPizzaRepository"-->
+    <!--<bean name="pizzaRepository" class="ua.rd.pizzaservice.repository.inmemory.InMemoryPizzaRepository"-->
     <!--init-method="init"/>-->
-    <!--<bean name="orderRepository" class="ua.rd.pizzaservice.repository.InMemoryOrderRepository"/>-->
+    <!--<bean name="orderRepository" class="ua.rd.pizzaservice.repository.inmemory.InMemoryOrderRepository"/>-->
     <bean class="ua.rd.pizzaservice.infrastructure.BenchmarkBeanPostProcessor"/>
 
     <context:annotation-config/>

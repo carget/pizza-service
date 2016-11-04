@@ -20,19 +20,21 @@ public class OrderTest {
     private static final BigDecimal BIG_DECIMAL_EPSILON = BigDecimal.valueOf(0.00001d);
 
     private Customer customer;
+    private Address address;
     private List<Pizza> pizzaList;
     private Order order;
 
 
     @Before
     public void setUp() throws Exception {
-        customer = new Customer("John", "Kudryashova str. 18");
+        address = new Address(null, "Kudryashova", 18, null);
+        customer = new Customer("John Black", address);
         pizzaList = new ArrayList<>();
-        pizzaList.add(new Pizza(0, new BigDecimal(10), "Pizza 1", Pizza.Type.MEAT));
-        pizzaList.add(new Pizza(1, new BigDecimal(20), "Pizza 2", Pizza.Type.SEA));
-        pizzaList.add(new Pizza(2, new BigDecimal(30), "Pizza 3", Pizza.Type.VEGETARIAN));
-        pizzaList.add(new Pizza(3, new BigDecimal(40), "Pizza 4", Pizza.Type.SEA));
-        pizzaList.add(new Pizza(4, new BigDecimal(50), "Pizza 5", Pizza.Type.MEAT));
+        pizzaList.add(new Pizza(0L, new BigDecimal(10), "Pizza 1", Pizza.Type.MEAT));
+        pizzaList.add(new Pizza(1L, new BigDecimal(20), "Pizza 2", Pizza.Type.SEA));
+        pizzaList.add(new Pizza(2L, new BigDecimal(30), "Pizza 3", Pizza.Type.VEGETARIAN));
+        pizzaList.add(new Pizza(3L, new BigDecimal(40), "Pizza 4", Pizza.Type.SEA));
+        pizzaList.add(new Pizza(4L, new BigDecimal(50), "Pizza 5", Pizza.Type.MEAT));
     }
 
     @After

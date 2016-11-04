@@ -1,8 +1,9 @@
-package ua.rd.pizzaservice.repository;
+package ua.rd.pizzaservice.repository.inmemory;
 
 import org.springframework.stereotype.Repository;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.infrastructure.Benchmark;
+import ua.rd.pizzaservice.repository.OrderRepository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +11,6 @@ import java.util.Map;
 /**
  * @author Anton_Mishkurov
  */
-@Repository
 public class InMemoryOrderRepository implements OrderRepository {
 
     private Map<Long, Order> orderList;
