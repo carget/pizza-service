@@ -17,6 +17,10 @@ public class Order implements Serializable {
     //TODO replace with map
     @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Pizza> pizzaList;
+    @ElementCollection
+    @CollectionTable(name = "CART")
+    @MapKeyJoinColumn(name = "pizza_id")
+    @Column(name = "pizza_count")
     private Map<Pizza, Integer> cart;
     @TableGenerator(name = "orderGen", allocationSize = 10, initialValue = 1000,
             pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_ORDER_ID", valueColumnName = "NEXT_VAL")
@@ -57,7 +61,8 @@ public class Order implements Serializable {
 
     public void setStatus(Status status) {
         if (!this.status.canChangeTo(status)) {
-            throw new IllegalArgumentException(String.format("Cannot change order status from %s to %s", this.status, status));
+            throw new IllegalArgumentException(
+                    String.format("Cannot change order status from %s to %s", this.status, status));
         }
         this.status = status;
     }
