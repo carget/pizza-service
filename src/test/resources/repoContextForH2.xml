@@ -21,9 +21,7 @@
     <bean class="ua.rd.pizzaservice.infrastructure.BenchmarkBeanPostProcessor"/>
 
     <context:annotation-config/>
-    <context:component-scan base-package="ua.rd.pizzaservice.repository">
-
-    </context:component-scan>
+    <context:component-scan base-package="ua.rd.pizzaservice.repository"/>
 
     <jdbc:embedded-database id="dataSource" type="H2"/>
 

@@ -22,7 +22,6 @@ public class JpaOrderRepository implements OrderRepository {
     @Transactional
     @Benchmark
     public void saveOrder(Order newOrder) {
-//        entityManager.persist(newOrder);
         entityManager.merge(newOrder);
     }
 

@@ -11,14 +11,8 @@ import java.util.*;
 @Entity(name = "_Order")
 public class Order implements Serializable {
 
-    public static final int PIZZA_QTY_FOR_DISCOUNT = 4;
-    public static final double PIZZA_QTY_DISCOUNT_PERCENT = 0.3;
-
-    //TODO replace with map
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    private List<Pizza> pizzaList;
     @ElementCollection
-    @CollectionTable(name = "CART")
+    @CollectionTable(name = "cart")
     @MapKeyJoinColumn(name = "pizza_id")
     @Column(name = "pizza_count")
     private Map<Pizza, Integer> cart;
@@ -38,21 +32,28 @@ public class Order implements Serializable {
         this.status = Status.NEW;
     }
 
-    public Order() {}
+    public Order() {
+    }
 
-    public Order(Customer customer, List<Pizza> pizzaList) {
+    public Order(Customer customer, Map<Pizza, Integer> pizzaList) {
         this.customer = customer;
-        this.pizzaList = pizzaList;
+        this.cart = pizzaList;
     }
 
     public BigDecimal getTotal() {
-        BigDecimal total = pizzaList.stream()
-                .map(Pizza::getPrice)
+        BigDecimal total = cart.entrySet().stream()
+                .map(e -> (e.getKey().getPrice().multiply(new BigDecimal(e.getValue()))))
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(2, BigDecimal.ROUND_CEILING);
-        total = total.subtract(getDiscountByQuantity());
-        total = total.subtract(getDiscountByCard(total));
-        return total;
+        return total.setScale(2, BigDecimal.ROUND_CEILING);
+    }
+
+    public void submitOrder(){
+        setStatus(Status.IN_PROGRESS);
+    }
+
+    public void cancelOrder(){
+        setStatus(Status.CANCELED);
     }
 
     public Status getStatus() {
@@ -67,16 +68,20 @@ public class Order implements Serializable {
         this.status = status;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public void setPizzas(List<Pizza> pizzas) {
-        this.pizzaList = pizzas;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public Map<Pizza, Integer> getCart() {
+        return new HashMap<>(cart);  //clone existing map
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void doneOrder() {
+        setStatus(Status.DONE);
     }
 
     public enum Status {
@@ -112,34 +117,11 @@ public class Order implements Serializable {
         }
     }
 
-    public BigDecimal getDiscountByQuantity() {
-        if (pizzaList.size() < PIZZA_QTY_FOR_DISCOUNT) {
-            return BigDecimal.ZERO;
-        }
-
-        BigDecimal discount = new BigDecimal(PIZZA_QTY_DISCOUNT_PERCENT).setScale(2, BigDecimal.ROUND_CEILING);
-
-        BigDecimal total = pizzaList.stream()
-                .map(Pizza::getPrice)
-                .max(BigDecimal::compareTo)
-                .get().multiply(discount);
-        return total;
-    }
-
-    private BigDecimal getDiscountByCard(BigDecimal sumOrder) {
-        if (customer.getDiscountCard() == null) {
-            return BigDecimal.ZERO;
-        }
-        BigDecimal maxDiscount = sumOrder.multiply(new BigDecimal(0.3));
-        BigDecimal cardAmountDiscount = customer.getDiscountCard().getAmount().multiply(new BigDecimal(0.1));
-        return maxDiscount.min(cardAmountDiscount);
-    }
-
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", pizzaList=" + pizzaList +
+                ", cart=" + cart +
                 ", customer=" + customer +
                 '}';
     }

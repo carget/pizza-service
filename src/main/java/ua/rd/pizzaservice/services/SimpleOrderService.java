@@ -1,7 +1,6 @@
 package ua.rd.pizzaservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ua.rd.pizzaservice.domain.Customer;
 import ua.rd.pizzaservice.domain.Order;
@@ -9,8 +8,8 @@ import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.infrastructure.Benchmark;
 import ua.rd.pizzaservice.repository.OrderRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Anton_Mishkurov
@@ -20,41 +19,35 @@ public class SimpleOrderService implements OrderService {
 
     public static final int MAX_PIZZA_COUNT = 10;
 
-    private final OrderRepository orderRepository; // = new InMemoryOrderRepository();
-    private final PizzaService pizzaService; //new SimplePizzaService();
+    private final OrderRepository orderRepository;
+    private final PizzaService pizzaService;
+    private final DiscountService discountService;
 
     @Autowired
-    public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService)  {
+    public SimpleOrderService(OrderRepository orderRepository, PizzaService pizzaService, DiscountService discountService) {
         this.orderRepository = orderRepository;
         this.pizzaService = pizzaService;
+        this.discountService = discountService;
     }
 
     @Benchmark
     @Override
-    public Order placeNewOrder(Customer customer, Long... pizzasID) {
-        verifyPizzaCount(pizzasID);
-        List<Pizza> pizzas = new ArrayList<>();
+    public Order placeNewOrder(Customer customer, Long... pizzasId) {
+        verifyPizzaCount(pizzasId);
+        Map<Pizza, Integer> pizzas = new HashMap<>();
 
-        for (Long id : pizzasID) {
+        for (Long id : pizzasId) {
             Pizza pizzaById = findPizzaById(id);
             if (pizzaById == null) {
                 throw new IllegalArgumentException(String.format("Pizza with ID=%d does not exist", id));
             }
-            pizzas.add(pizzaById);  // get Pizza from predefined in-memory list
+            Integer currPizzaCount = pizzas.get(pizzaById);
+            currPizzaCount = currPizzaCount == null ? 0 : currPizzaCount;
+            pizzas.put(pizzaById, currPizzaCount + 1);
         }
-
         Order newOrder = new Order(customer, pizzas);
-//        Order newOrder = instantiateNewOrder();
-//        newOrder.setCustomer(customer);
-//        newOrder.setPizzas(pizzas);
-
-//        saveOrder(newOrder);  // set Order Id and save Order to in-memory list
         return newOrder;
     }
-
-//    protected Order instantiateNewOrder() {
-//        throw new IllegalStateException("Container cannot create order!");
-//    }
 
     private void verifyPizzaCount(Long[] pizzasID) {
         int pizzaCount = pizzasID.length;
@@ -69,14 +62,23 @@ public class SimpleOrderService implements OrderService {
     }
 
     @Override
-    public void saveOrder(Order newOrder) {
-//        newOrder.setNextId();
-        orderRepository.saveOrder(newOrder);
+    public void submitOrder(Order order) {
+        orderRepository.saveOrder(order);
+        order.submitOrder();
+        order.getCustomer().getDiscountCard().subtractAmount(discountService.getDiscount(order));
     }
 
     @Override
     public void cancelOrder(Long orderId) {
-        orderRepository.getOrderById(orderId);
+        Order order = orderRepository.getOrderById(orderId);
+        order.cancelOrder();
+        order.getCustomer().getDiscountCard().addAmount(discountService.getDiscount(order));
+    }
+
+    @Override
+    public void completeOrder(Long orderId) {
+        Order order = orderRepository.getOrderById(orderId);
+        order.doneOrder();
     }
 
 }

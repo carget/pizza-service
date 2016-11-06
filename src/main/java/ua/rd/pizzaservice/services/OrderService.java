@@ -9,8 +9,10 @@ import ua.rd.pizzaservice.domain.Order;
 public interface OrderService {
     Order placeNewOrder(Customer customer, Long... pizzasID);
 
-    void saveOrder(Order newOrder);
+    void submitOrder(Order newOrder);
 
     void cancelOrder(Long orderId);
+
+    void completeOrder(Long orderId);
 
 }

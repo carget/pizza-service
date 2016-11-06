@@ -6,7 +6,7 @@ import javax.persistence.*;
  * @author Anton_Mishkurov
  */
 @Entity
-public class Customer {
+public class Customer implements Cloneable{
     @TableGenerator(name = "customerGen", allocationSize = 10, initialValue = 1000,
             pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_CUSTOMER_ID", valueColumnName = "NEXT_VAL")
     @Id
@@ -58,6 +58,18 @@ public class Customer {
 
     public void setDiscountCard(DiscountCard discountCard) {
         this.discountCard = discountCard;
-        discountCard.setCustomer(this);
+    }
+
+    @Override
+    public Object clone(){
+        Customer newCustomer = null;
+        try {
+            newCustomer = (Customer) super.clone();
+            newCustomer.address= (Address) this.address.clone();
+            newCustomer.discountCard = (DiscountCard) this.discountCard.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return newCustomer;
     }
 }

@@ -6,7 +6,7 @@ import javax.persistence.*;
  * @author Anton_Mishkurov
  */
 @Entity
-public class Address {
+public class Address implements Cloneable{
     @TableGenerator(name = "addressGen", allocationSize = 10, initialValue = 1000,
             pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_ADDRESS_ID", valueColumnName = "NEXT_VAL")
     @Id
@@ -45,5 +45,10 @@ public class Address {
                 ", house=" + house +
                 ", apartment=" + apartment +
                 '}';
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

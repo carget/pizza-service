@@ -22,7 +22,7 @@ public class InMemoryOrderRepository implements OrderRepository {
     @Override
     @Benchmark
     public void saveOrder(Order newOrder) {
-        newOrder.setNextId();
+//        newOrder.setNextId();
         orderList.put(newOrder.getId(), newOrder);
     }
 
