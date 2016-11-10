@@ -21,8 +21,8 @@ public class JpaOrderRepository implements OrderRepository {
     @Override
     @Transactional
     @Benchmark
-    public void saveOrder(Order newOrder) {
-        entityManager.merge(newOrder);
+    public Order saveOrder(Order newOrder) {
+        return entityManager.merge(newOrder);
     }
 
     @Override

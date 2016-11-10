@@ -1,6 +1,5 @@
 package ua.rd.pizzaservice.repository.inmemory;
 
-import org.springframework.stereotype.Repository;
 import ua.rd.pizzaservice.domain.Order;
 import ua.rd.pizzaservice.infrastructure.Benchmark;
 import ua.rd.pizzaservice.repository.OrderRepository;
@@ -21,9 +20,10 @@ public class InMemoryOrderRepository implements OrderRepository {
 
     @Override
     @Benchmark
-    public void saveOrder(Order newOrder) {
+    public Order saveOrder(Order newOrder) {
 //        newOrder.setNextId();
         orderList.put(newOrder.getId(), newOrder);
+        return newOrder;
     }
 
     @Override

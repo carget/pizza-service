@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 public class Customer implements Cloneable{
-    @TableGenerator(name = "customerGen", allocationSize = 10, initialValue = 1000,
+    @TableGenerator(name = "customerGen", allocationSize = 10, initialValue = 2000,
             pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_CUSTOMER_ID", valueColumnName = "NEXT_VAL")
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "customerGen")

@@ -3,21 +3,11 @@ package ua.rd.pizzaservice.services;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import ua.rd.pizzaservice.domain.*;
-import ua.rd.pizzaservice.domain.discounts.Discount;
-import ua.rd.pizzaservice.domain.discounts.DiscountByCard;
-import ua.rd.pizzaservice.domain.discounts.DiscountByQty;
-import ua.rd.pizzaservice.repository.OrderRepository;
 import ua.rd.pizzaservice.repository.PizzaRepository;
-import ua.rd.pizzaservice.repository.RepositoryTestConfig;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,42 +18,46 @@ import static ua.rd.pizzaservice.services.SimpleOrderService.MAX_PIZZA_COUNT;
 /**
  * @author Anton_Mishkurov
  */
-@Ignore
 public class SimpleOrderServiceIT extends ServicesTestConfig {
 
     private Order testOrder;
     private Customer customer;
-    @Qualifier("orderService")
+    @Autowired
     private OrderService orderService;
     @Autowired
     private PizzaRepository pizzaRepository;
     @Autowired
     private DiscountService discountService;
-    private Address address;
 
     @Before
     public void setUp() throws Exception {
-        address = new Address(null, "Kudryashova", 18, null);
-        pizzaRepository.save(new Pizza(null, new BigDecimal(10), "Pizza 1", Pizza.Type.MEAT));
-        pizzaRepository.save(new Pizza(null, new BigDecimal(20), "Pizza 2", Pizza.Type.SEA));
-        pizzaRepository.save(new Pizza(null, new BigDecimal(30), "Pizza 3", Pizza.Type.VEGETARIAN));
+        Address address = new Address(null, "Kudryashova", 18, null);
+        Pizza pizza1 = new Pizza(0L, new BigDecimal(10), "Pizza 1", Pizza.Type.MEAT);
+        Pizza pizza2 = new Pizza(1L, new BigDecimal(20), "Pizza 2", Pizza.Type.SEA);
+        Pizza pizza3 = new Pizza(2L, new BigDecimal(30), "Pizza 3", Pizza.Type.VEGETARIAN);
+        pizzaRepository.save(pizza1);
+        pizzaRepository.save(pizza2);
+        pizzaRepository.save(pizza3);
 
         Map<Pizza, Integer> cart = new HashMap<>();
-        cart.put(new Pizza(0L, new BigDecimal(10), "Pizza 1", Pizza.Type.MEAT), 1);
-        cart.put(new Pizza(1L, new BigDecimal(20), "Pizza 2", Pizza.Type.SEA), 1);
-        cart.put(new Pizza(2L, new BigDecimal(30), "Pizza 3", Pizza.Type.VEGETARIAN), 1);
+        cart.put(pizza1, 1);
+        cart.put(pizza2, 1);
+        cart.put(pizza3, 1);
         customer = new Customer("John Black", address);
         DiscountCard discountCard = new DiscountCard(new BigDecimal(100));
         customer.setDiscountCard(discountCard);
         testOrder = new Order(customer, cart);
     }
 
+    @Ignore
     @Test(expected = IllegalStateException.class)
     public void placeNewBigOrder() throws Exception {
-        orderService.placeNewOrder(null, new Long[MAX_PIZZA_COUNT + 1]);
+        assert (orderService != null);
+        orderService.placeNewOrder(customer, new Long[MAX_PIZZA_COUNT + 1]);
     }
 
-    @Test@Ignore
+    @Test
+    @Ignore
     public void submitOrder() throws Exception {
         BigDecimal initDiscountAmount = testOrder.getCustomer().getDiscountCard().getAmount();
         BigDecimal subtrahend = discountService.getDiscount(testOrder);
@@ -73,7 +67,8 @@ public class SimpleOrderServiceIT extends ServicesTestConfig {
         assertThat(testOrder.getCustomer().getDiscountCard().getAmount(), is(expectedDiscountAmount));
     }
 
-    @Test@Ignore
+    @Test
+    @Ignore
     public void cancelOrder() throws Exception {
         BigDecimal initDiscountAmount = testOrder.getCustomer().getDiscountCard().getAmount();
         BigDecimal returnedDiscount = discountService.getDiscount(testOrder);

@@ -16,13 +16,13 @@ public class Order implements Serializable {
     @MapKeyJoinColumn(name = "pizza_id")
     @Column(name = "pizza_count")
     private Map<Pizza, Integer> cart;
-    @TableGenerator(name = "orderGen", allocationSize = 10, initialValue = 1000,
+    @TableGenerator(name = "orderGen", allocationSize = 10, initialValue = 4000,
             pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_ORDER_ID", valueColumnName = "NEXT_VAL")
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "orderGen")
     private Long id;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
     private static Long nextId = 0L;
     @Enumerated(EnumType.STRING)
@@ -48,11 +48,11 @@ public class Order implements Serializable {
         return total.setScale(2, BigDecimal.ROUND_CEILING);
     }
 
-    public void submitOrder(){
+    public void submitOrder() {
         setStatus(Status.IN_PROGRESS);
     }
 
-    public void cancelOrder(){
+    public void cancelOrder() {
         setStatus(Status.CANCELED);
     }
 
@@ -124,5 +124,30 @@ public class Order implements Serializable {
                 ", cart=" + cart +
                 ", customer=" + customer +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+
+        Order order = (Order) o;
+
+        if (id != null && order.id != null) {
+            return Objects.equals(id, order.id);
+        } else {
+            if (cart != null ? !cart.equals(order.cart) : order.cart != null) return false;
+            if (customer != null ? !customer.equals(order.customer) : order.customer != null) return false;
+            return status == order.status;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = cart != null ? cart.hashCode() : 0;
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (customer != null ? customer.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        return result;
     }
 }

@@ -1,4 +1,4 @@
-package ua.rd.pizzaservice.repository;
+package ua.rd.pizzaservice.repository.jpa;
 
 import org.junit.After;
 import org.junit.Before;
@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.pizzaservice.domain.Pizza;
+import ua.rd.pizzaservice.repository.PizzaRepository;
+import ua.rd.pizzaservice.repository.RepositoryTestConfig;
 
 import java.math.BigDecimal;
 
@@ -23,10 +25,12 @@ public class JpaPizzaRepositoryIT extends RepositoryTestConfig {
 
     @Autowired
     private PizzaRepository pizzaRepository;
+    private Pizza testPizza;
 
     @Before
     public void setUp() throws Exception {
-
+        testPizza = new Pizza(1L, BigDecimal.TEN, "Test Order", Pizza.Type.MEAT);
+        jdbcTemplate.execute("INSERT INTO PIZZA (id, name, price, type) VALUES (1, 'Test Order', 10.00, 'MEAT');");
     }
 
     @After
@@ -36,6 +40,8 @@ public class JpaPizzaRepositoryIT extends RepositoryTestConfig {
 
     @Test
     public void findPizzaByID() throws Exception {
+        Pizza pizza = pizzaRepository.findPizzaByID(1L);
+        assertThat(pizza, is(testPizza));
     }
 
     @Test

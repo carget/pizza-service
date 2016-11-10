@@ -45,8 +45,7 @@ public class SimpleOrderService implements OrderService {
             currPizzaCount = currPizzaCount == null ? 0 : currPizzaCount;
             pizzas.put(pizzaById, currPizzaCount + 1);
         }
-        Order newOrder = new Order(customer, pizzas);
-        return newOrder;
+        return new Order(customer, pizzas);
     }
 
     private void verifyPizzaCount(Long[] pizzasID) {

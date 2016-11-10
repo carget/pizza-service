@@ -9,7 +9,7 @@ import ua.rd.pizzaservice.domain.Order;
 
 public interface OrderRepository {
 
-    void saveOrder(Order newOrder) ;
+    Order saveOrder(Order newOrder) ;
 
     Order getOrderById(Long orderId);
 

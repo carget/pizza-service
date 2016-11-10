@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  */
 @Entity
 public class DiscountCard implements Cloneable {
-    @TableGenerator(name = "discountGen", allocationSize = 10, initialValue = 1000,
+    @TableGenerator(name = "discountGen", allocationSize = 10, initialValue = 3000,
             pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_DISCOUNT_ID", valueColumnName = "NEXT_VAL")
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "discountGen")

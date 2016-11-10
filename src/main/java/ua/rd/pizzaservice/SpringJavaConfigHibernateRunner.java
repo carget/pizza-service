@@ -7,6 +7,7 @@ import ua.rd.pizzaservice.domain.*;
 import ua.rd.pizzaservice.repository.PizzaRepository;
 import ua.rd.pizzaservice.services.DiscountService;
 import ua.rd.pizzaservice.services.OrderService;
+import ua.rd.pizzaservice.services.PizzaService;
 
 import java.math.BigDecimal;
 
@@ -25,23 +26,25 @@ public class SpringJavaConfigHibernateRunner {
         DiscountCard card = new DiscountCard(BigDecimal.TEN);
         customer.setDiscountCard(card);
 
-//        Pizza pizza = new Pizza(null, BigDecimal.TEN, "Meattt", Pizza.Type.MEAT);
-//        pizzaRepository.save(pizza);
-//        pizza = new Pizza(null, BigDecimal.TEN, "Seaaa", Pizza.Type.SEA);
-//        pizzaRepository.save(pizza);
-//        pizza = new Pizza(null, BigDecimal.TEN, "Veg", Pizza.Type.VEGETARIAN);
-//        pizzaRepository.save(pizza);
+//        saveSomePizzas(pizzaRepository);
 
         OrderService orderService = (OrderService) context.getBean("orderService");
         DiscountService discountService = (DiscountService) context.getBean("discountService");
-        Order order = orderService.placeNewOrder(customer, 1001L, 1002L, 1003L);
+        Order order = orderService.placeNewOrder(customer, 5001L, 5002L, 5003L);
         orderService.submitOrder(order);
-//
+
         System.out.println(order);
         System.out.println("Discount "  + discountService.getDiscount(order));
 
-//        pizzaRepository.save(pizza);
-
         context.close();
+    }
+
+    private static void saveSomePizzas(PizzaRepository pizzaRepository) {
+        Pizza pizza = new Pizza(null, BigDecimal.TEN, "Meattt", Pizza.Type.MEAT);
+        pizzaRepository.save(pizza);
+        pizza = new Pizza(null, BigDecimal.TEN, "Seaaa", Pizza.Type.SEA);
+        pizzaRepository.save(pizza);
+        pizza = new Pizza(null, BigDecimal.TEN, "Veg", Pizza.Type.VEGETARIAN);
+        pizzaRepository.save(pizza);
     }
 }

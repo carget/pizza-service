@@ -5,8 +5,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ua.rd.pizzaservice.config.AppConfig;
-import ua.rd.pizzaservice.config.RepoConfig;
-import ua.rd.pizzaservice.config.RepoContextForH2;
 
 /**
  *

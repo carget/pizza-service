@@ -3,13 +3,14 @@ package ua.rd.pizzaservice.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * @author Anton_Mishkurov
  */
 @Entity
 public class Pizza implements Serializable {
-    @TableGenerator(name = "pizzaGen", allocationSize = 10, initialValue = 1000,
+    @TableGenerator(name = "pizzaGen", allocationSize = 10, initialValue = 5000,
             pkColumnName = "GEN_NAME", pkColumnValue = "NEXT_PIZZA_ID", valueColumnName = "NEXT_VAL")
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "pizzaGen")
@@ -73,5 +74,30 @@ public class Pizza implements Serializable {
 
     public enum Type {
         VEGETARIAN, SEA, MEAT
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pizza)) return false;
+
+        Pizza pizza = (Pizza) o;
+
+        if (id != null && pizza.id != null) {
+            return Objects.equals(id, pizza.id);
+        } else {
+            if (price != null ? !price.equals(pizza.price) : pizza.price != null) return false;
+            if (name != null ? !name.equals(pizza.name) : pizza.name != null) return false;
+            return type == pizza.type;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
     }
 }
