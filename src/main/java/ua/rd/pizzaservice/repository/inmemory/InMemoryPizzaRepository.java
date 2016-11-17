@@ -9,6 +9,7 @@ import ua.rd.pizzaservice.repository.PizzaRepository;
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,6 +41,11 @@ public class InMemoryPizzaRepository implements PizzaRepository {
     @Override
     public Pizza save(Pizza pizza) {
         throw new UnsupportedOperationException("Not supported yet!");
+    }
+
+    @Override
+    public List<Pizza> findAll() {
+        return Collections.unmodifiableList(pizzaList);
     }
 
     @PostCreate

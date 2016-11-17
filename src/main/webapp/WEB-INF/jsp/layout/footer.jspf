@@ -1,0 +1,17 @@
+</div>
+</div>
+
+<div class="navbar-fixed-bottom">
+    <div class="container">
+        <hr>
+        <h3 align="center">
+            <fmt:message key="COPYRIGHT" bundle="${lang}"/>
+        </h3>
+    </div>
+</div>
+<%--END container--%>
+</div>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="/res/js/bootstrap.js"></script>
+</body>
+</html>

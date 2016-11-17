@@ -7,6 +7,7 @@ import ua.rd.pizzaservice.repository.PizzaRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * @author Anton_Mishkurov
@@ -26,5 +27,10 @@ public class JpaPizzaRepository implements PizzaRepository {
     @Transactional
     public Pizza save(Pizza pizza) {
         return entityManager.merge(pizza);
+    }
+
+    @Override
+    public List<Pizza> findAll() {
+        return entityManager.createQuery("SELECT p FROM Pizza p", Pizza.class).getResultList();
     }
 }

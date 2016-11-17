@@ -6,6 +6,8 @@ import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.infrastructure.Benchmark;
 import ua.rd.pizzaservice.repository.PizzaRepository;
 
+import java.util.List;
+
 /**
  * @author Anton_Mishkurov
  */
@@ -28,5 +30,10 @@ public class SimplePizzaService implements PizzaService {
     @Override
     public Pizza save(Pizza pizza) {
         return pizzaRepository.save(pizza);
+    }
+
+    @Override
+    public List<Pizza> findAll() {
+        return pizzaRepository.findAll();
     }
 }
