@@ -23,14 +23,14 @@ public class RestPizzaController {
     }
 
     @RequestMapping(
-            value = "hello",
+            value = "rest",
             method = RequestMethod.GET)
     public String hello() {
         return "Hello from rest Controller";
     }
 
     @RequestMapping(
-            value = "hello/{pizzaId}")
+            value = "rest/{pizzaId}")
     public ResponseEntity<Pizza> getPizza(@PathVariable(name = "pizzaId") Long id) {
         final Pizza pizza = pizzaService.getPizzaByID(id);
         if (pizza == null) {

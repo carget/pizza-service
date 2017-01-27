@@ -7,7 +7,6 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.rd.pizzaservice.domain.Pizza;
 import ua.rd.pizzaservice.services.PizzaService;
 
-import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -40,10 +39,11 @@ public class PizzaController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView edit(ModelAndView modelAndView, @ModelAttribute Pizza pizza) {
+    public ModelAndView save(ModelAndView modelAndView, @ModelAttribute Pizza pizza) {
         pizzaService.save(pizza);
         modelAndView.setViewName("redirect:/app/list");
         return modelAndView;
+//        return "redirect:list";
     }
 
     @RequestMapping(value = "pizza/{id}", method = RequestMethod.GET)
@@ -52,4 +52,14 @@ public class PizzaController {
         modelAndView.addObject("pizzas", Collections.singletonList(pizzaService.getPizzaByID(id)));
         return modelAndView;
     }
+
+    @ModelAttribute
+    public Pizza pizzaById(@RequestParam(name = "pizzaId", required = false) Long id) {
+        if (id != null) {
+            return pizzaService.getPizzaByID(id);
+        } else {
+            return new Pizza();
+        }
+    }
+
 }
